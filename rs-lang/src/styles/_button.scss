@@ -1,0 +1,53 @@
+.btn {
+  width: 250px;
+  height: 50px;
+  background-color: rgb(190, 215, 167);
+  border: 2px solid black;
+  font-size: 24px;
+  cursor: pointer;
+  &.active {
+    background-color: rgb(29, 87, 27);
+  }
+  &_group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    background-color: rgb(209, 209, 176);
+    //border-radius: 80%;
+    &:hover {
+      background-color: rgb(90, 84, 84);
+      
+    }
+    &.active {
+      background-color: rgb(90, 84, 84);
+    }
+  }
+  &_hard,&_learned, &_delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 50px;
+    background-color: rgb(205, 166, 115);
+    font-size: 12px;
+    &:hover {
+      background-color: rgb(99, 58, 5);
+      cursor: pointer;
+    }
+  }
+}
+
+.wrapper-btn {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.btn_login {
+  
+  background-color: rgb(76, 193, 94);
+  border: 2px solid black;
+  font-size: 24px;
+  cursor: pointer;
+}

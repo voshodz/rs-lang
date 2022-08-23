@@ -1,0 +1,35 @@
+.card {
+  //@at-root: 50px;
+  font-size: 24px;
+  width: 400px;
+  height: 300px;
+  background: rgb(204, 228, 204);
+  display: flex;
+  flex-direction: column;
+  &__info {
+    border: 2px solid black;
+  }
+  &__btn-wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+}
+.container-words {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 650px;
+  gap: 5px;
+  margin: 0 auto;
+  &__field {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+    gap: 5px;
+  }
+}
+
+.select {
+  font-size: 36px;
+  width: 300px;
+}
