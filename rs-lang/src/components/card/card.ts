@@ -1,17 +1,9 @@
-import { Word } from '../types';
-import { Api } from './api';
-import { Auth } from './auth/auth';
-import { Dictionary } from './dictionary/dictionary';
+import { ApiInst, AuthInst, DictionaryInst } from '../../instances/instances';
+import { BASE_URL, Word } from '../../types';
 
 export class Card {
-  api: Api;
-  auth: Auth;
-  dict: Dictionary;
-  constructor() {
-    this.api = new Api();
-    this.auth = new Auth();
-    this.dict = new Dictionary();
-  }
+  //auth: Auth;
+
   private markdownOfButtons(wordId: string): string {
     const markDown = `
                       <div class="card__btn-wrapper">
@@ -21,16 +13,16 @@ export class Card {
                       </div>`;
     return markDown;
   }
-  private async checkWordHardOrNot(wordId: string): Promise<string> {
+  /*private async checkWordHardOrNot(wordId: string): Promise<string> {
     //await this.dict.checkExistWorIdOrNotInDict(wordId).then((res) => console.log(res));
-    const res = await this.dict.checkWordInDict(wordId);
+    const res = await DictionaryInst.checkWordInDict(wordId);
     //console.log(await res);
     if ((await res) === true) {
       return 'btn_hard active';
     } else {
       return 'btn_hard';
     }
-  }
+  }*/
   public markdownOfSelect = `<select class="select">
                             <option value="0">Page 1</option>
                             <option value="1">Page 2</option>
@@ -50,12 +42,14 @@ export class Card {
   public createCard(word: Word): string {
     const markdownOfCard = `<div class="card">
                 <div class="card__info" data-id="${word.id}">
-                  <p>${word.id}<p>
+                  
                   Слово: ${word.word}
+                  <br>
                   Перевод: ${word.wordTranslate}
+                  <br>
+                  <img src="${BASE_URL}/${word.image}" alt="">
                   page: ${word.page}
                   group: ${word.group}
-
                 </div>
                 ${this.buttonsWithAuthorizationInfo(word.id)}
             </div>`;
@@ -63,7 +57,7 @@ export class Card {
     return markdownOfCard;
   }
   private buttonsWithAuthorizationInfo(wordId: string): string {
-    if (this.auth.checkAuthorization()) {
+    if (AuthInst.checkAuthorization()) {
       return this.markdownOfButtons(wordId);
     }
     return '<div>Нет авторизации</div>';
@@ -83,7 +77,7 @@ export class Card {
           const wordId = btn.dataset.id;
           console.log(wordId);
           if (wordId) {
-            this.api.createWordforUser(this.auth.getUserId(), wordId, this.auth.getToken(), 'hard', {});
+            ApiInst.createWordforUser(AuthInst.getUserId(), wordId, AuthInst.getToken(), 'hard', {});
           }
         });
       });
@@ -98,7 +92,7 @@ export class Card {
           const wordId = btn.dataset.id;
           console.log('Deleting => ', wordId);
           if (wordId) {
-            this.api.deleteWordforUser(this.auth.getUserId(), wordId, this.auth.getToken());
+            ApiInst.deleteWordforUser(AuthInst.getUserId(), wordId, AuthInst.getToken());
           }
         });
       });
@@ -114,9 +108,9 @@ export class Card {
           console.log('Learned => ', wordId);
           if (wordId) {
             //console.log(await this.dict.checkWordInDict(wordId));
-            console.log(await this.checkWordHardOrNot(wordId));
-            //await this.api.getAllWordsOfUser(userId)
-            //const res = await this.api.getWordOfUserByWordId(this.auth.getUserId(), wordId, this.auth.getToken());
+            //console.log(await this.checkWordHardOrNot(wordId));
+            await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken());
+            //const res = await ApiInst.getWordOfUserByWordId(AuthInst.getUserId(), wordId, AuthInst.getToken());
             //console.log(res);
           }
         });

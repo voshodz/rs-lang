@@ -1,20 +1,11 @@
+import { ApiInst, AuthInst, CardInst } from '../../instances/instances';
 import { Word } from '../../types';
-import { Api } from '../api';
-import { Card } from '../card';
 import { Auth } from '../auth/auth';
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDIxMTRjODY5ODA3MDAxNWEzYTA3MCIsImlhdCI6MTY2MTA4MDA0OSwiZXhwIjoxNjYxMDk0NDQ5fQ.XgPP6VHAo-wlzzlPCxwSLB6frxQK6zc1KwfyT0bPvrY';
+//const token =
+//  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDIxMTRjODY5ODA3MDAxNWEzYTA3MCIsImlhdCI6MTY2MTA4MDA0OSwiZXhwIjoxNjYxMDk0NDQ5fQ.XgPP6VHAo-wlzzlPCxwSLB6frxQK6zc1KwfyT0bPvrY';
 export class Book {
-  //btnsGroup = document.querySelectorAll('.btn_group') as NodeListOf<HTMLDivElement>;
-  card: Card;
-  api: Api;
-  auth: Auth;
-  constructor() {
-    this.card = new Card();
-    this.api = new Api();
-    this.auth = new Auth();
-    //this.init();
-  }
+  //api: Api;
+  //auth: Auth;
   public init() {
     this.initContainerWords();
     this.initSelectOfGroupWords();
@@ -37,7 +28,7 @@ export class Book {
                         </div>
                           <div class="container-words">
                           <div class="container-words__select">
-                            ${this.card.markdownOfSelect}
+                            ${CardInst.markdownOfSelect}
                           </div>
                           <div class="container-words__field">
                           </div>
@@ -55,14 +46,14 @@ export class Book {
         if (btn.dataset.group) {
           group = parseInt(btn.dataset.group);
         }
-        const words: Array<Word> = await this.api.getWordsWithPageAndGroup(this.auth.getToken(), 0, group);
+        const words: Array<Word> = await ApiInst.getWordsWithPageAndGroup(AuthInst.getToken(), 0, group);
         console.log(words);
         const containerWords: HTMLDivElement | null = document.querySelector('.container-words__field');
         if (containerWords) {
           containerWords.innerHTML = '';
           words.forEach((word) => {
-            containerWords.innerHTML += this.card.createCard(word);
-            this.card.loadListenersToButtons();
+            containerWords.innerHTML += CardInst.createCard(word);
+            CardInst.loadListenersToButtons();
           });
         }
       });
@@ -78,14 +69,14 @@ export class Book {
         const containerWords: HTMLDivElement | null = document.querySelector('.container-words__field');
         if (containerWords) {
           containerWords.innerHTML = '';
-          const words: Array<Word> = await this.api.getWordsWithPageAndGroup(
-            this.auth.getToken(),
+          const words: Array<Word> = await ApiInst.getWordsWithPageAndGroup(
+            AuthInst.getToken(),
             parseInt(select.value),
             group
           );
           words.forEach((word) => {
-            containerWords.innerHTML += this.card.createCard(word);
-            this.card.loadListenersToButtons();
+            containerWords.innerHTML += CardInst.createCard(word);
+            CardInst.loadListenersToButtons();
           });
         }
       });

@@ -1,14 +1,12 @@
+import { ApiInst } from '../../instances/instances';
 import { AuthUser } from '../../types';
-import { Api } from '../api';
 import './login.scss';
+
 export class Auth {
-  token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDM4YmMwNWNhNTUyMDAxNWRkYzU4MiIsImlhdCI6MTY2MTE3NzE2MywiZXhwIjoxNjYxMTkxNTYzfQ.GXisDZYLvbT-ij9lBC6Ni8rFkg51LsKSWx0xRcNM6WA';
+  token = '';
   userId = '';
-  api: Api;
   main: HTMLElement | null;
   constructor() {
-    this.api = new Api();
     this.main = document.querySelector('.container-main');
     if (this.checkAuthorization()) {
       this.setTokenAndUserIdFromLocalStorage();
@@ -71,8 +69,7 @@ export class Auth {
         const name: HTMLInputElement | null = formInfo.querySelector('[name="name"]');
         const password: HTMLInputElement | null = formInfo.querySelector('[name="password"]');
         if (name && password) {
-          await this.api
-            .loginCustomUser(name.value, password.value)
+          await ApiInst.loginUser(name.value, password.value)
             .then(async (res) => {
               const data: AuthUser = await res.json();
               console.log(data);
@@ -87,7 +84,7 @@ export class Auth {
   }
   private incorrectAuth(err: string) {
     console.log(err);
-    alert('Incorrect Auth');
+    alert('Incorrect Authorization info');
   }
   private successAuth(data: AuthUser) {
     this.setToken(data.token);
@@ -96,7 +93,9 @@ export class Auth {
     localStorage.setItem('userId', data.userId);
     if (this.main) {
       this.main.innerHTML = '';
-      this.main.innerHTML = `<div>${data.userId}  ${data.token}</div>`;
+      this.main.innerHTML = `<div>UserID = ${data.userId}  UserToken = ${data.token}</div>
+                      <h1> Авторизация прошла успешно</h1>
+                    `;
     }
   }
 }

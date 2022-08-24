@@ -1,9 +1,18 @@
+export const BASE_URL = 'https://api-rs-lang.herokuapp.com';
 export type Word = {
   id: string;
+  group: number;
+  page: number;
   word: string;
+  image: string;
+  audioMeaning: string;
+  audioExample: string;
+  textMeaning: string;
+  textExample: string;
+  transcription: string;
   wordTranslate: string;
-  group: string;
-  page: string;
+  textMeaningTranslate: string;
+  textExampleTranslate: string;
 };
 
 export type AuthUser = {
