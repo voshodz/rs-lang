@@ -42,26 +42,26 @@ export class Auth {
     localStorage.setItem('token', this.getToken());
     if (this.main) {
       this.main.innerHTML = `<form action="#" method="#" id="form">
-                          <div>
-                            <label>
-                              Имя:
-                              <input type="text" name="name" value="abc@mail.ru">
-                            </label>
-                          </div>
-                          <div>
-                            <label>
-                              Пароль:
-                              <input type="text" name="password" value="kolorit1313">
-                            </label>
-                          </div>                     
-                          <div>
-                            <button type="submit">Отправить</button>
-                          </div>
-                        </form>`;
+                            <div>
+                              <label>
+                                Ваш email для входа:
+                                <input type="text" name="name" value="abc@mail.ru" autocomplete="off">
+                              </label>
+                            </div>
+                            <div>
+                              <label>
+                                Ваш пароль:
+                                <input type="text" name="password" value="kolorit1313" autocomplete="off">
+                              </label>
+                            </div>                     
+                            <div>
+                              <button type="submit">Отправить</button>
+                            </div>
+                          </form>`;
     }
-    this.loadListenertoForm();
+    this.loadListenertoLoginForm();
   }
-  private loadListenertoForm() {
+  private loadListenertoLoginForm() {
     const formInfo: HTMLElement | null = document.getElementById('form');
     if (formInfo) {
       formInfo.addEventListener('submit', async (e) => {
@@ -98,4 +98,70 @@ export class Auth {
                     `;
     }
   }
+  public loadRegister() {
+    if (this.main) {
+      this.main.innerHTML = this.main.innerHTML = this.markdownRegisterForm;
+    }
+    this.loadListenerToRegisterForm();
+  }
+  private loadListenerToRegisterForm() {
+    const regForm: HTMLElement | null = document.getElementById('register-form');
+    if (regForm) {
+      regForm.addEventListener('submit', (e) => {
+        this.handlerToRegisterForm(regForm, e);
+      });
+    }
+  }
+  private async handlerToRegisterForm(form: HTMLElement, event: SubmitEvent) {
+    event.preventDefault();
+    const name: HTMLInputElement | null = form.querySelector('[name="name"]');
+    const email: HTMLInputElement | null = form.querySelector('[name="email"]');
+    const password: HTMLInputElement | null = form.querySelector('[name="password"]');
+    if (name && password && email) {
+      console.log(name.value);
+      console.log(email.value);
+      console.log(password.value);
+      const result = await ApiInst.createUser(email.value, password.value);
+      if (result.status === 417) {
+        alert('User already exist');
+        this.loadRegister();
+        return;
+      }
+      if (result.status === 422) {
+        alert('Incorrect input data, pls try again');
+        this.loadRegister();
+        return;
+      }
+      if (result.status === 200) {
+        alert('Success!!');
+        if (this.main) {
+          this.main.innerHTML = '<h1>Success</h1>';
+        }
+      }
+    }
+  }
+  markdownRegisterForm = `
+                <form action="#" method="#" id="register-form">
+                  <div>
+                    <label>
+                      Введите ваше имя регистрации:
+                      <input type="text" name="name" value="Alex N" autocomplete="off" required placeholder="Ваше имя">
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      Введите ваше email регистрации:
+                      <input type="text" name="email" value="abc@mail.ru" autocomplete="off" required placeholder="Ваше email">
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      Придумайте пароль:
+                      <input type="password" name="password" value="kolorit1313" autocomplete="off" required placeholder="Ваш пароль">
+                    </label>
+                  </div>                     
+                  <div>
+                    <button type="submit">Отправить</button>
+                  </div>
+                </form>`;
 }

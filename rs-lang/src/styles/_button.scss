@@ -14,7 +14,6 @@
     align-items: center;
     width: 180px;
     background-color: rgb(209, 209, 176);
-    //border-radius: 80%;
     &:hover {
       background-color: rgb(90, 84, 84);
       
@@ -36,6 +35,20 @@
       cursor: pointer;
     }
   }
+  &_register-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    border-radius: 5%;
+    background-color: whitesmoke;
+    font-size: 16px;
+    &:hover {
+      font-size: 24px;
+      transition: 0.5s ease-in-out;
+      background-color: rgb(223, 214, 198);
+    }
+  }
 }
 
 .wrapper-btn {
@@ -45,9 +58,7 @@
 }
 
 .btn_login {
-  
-  background-color: rgb(76, 193, 94);
+  //background-color: rgb(76, 193, 94);
   border: 2px solid black;
-  font-size: 24px;
   cursor: pointer;
 }

@@ -16,12 +16,13 @@ export class Api {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(user),
-    }).then((res) => {
+    });
+    /*.then((res) => {
       if (res.status !== 200) {
         throw new Error(`Incorrect createUser with status ${res.status}`);
       }
       return res.json();
-    });
+    });*/
   };
   public loginUser = async (email: string, password: string) => {
     const user = {

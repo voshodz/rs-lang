@@ -3,13 +3,7 @@ import { Word, WordDictionary } from '../../types';
 
 export class Dictionary {
   wordsOfUser: Array<WordDictionary>;
-  //auth: Auth;
-  //card: Card;
   constructor() {
-    //this.auth = new Auth();
-    //this.api = new Api();
-    //this.card = new Card();
-    console.log('ok');
     this.wordsOfUser = [];
   }
   /*public async checkExistWorIdOrNotInDict(wordId: string): Promise<boolean> {
