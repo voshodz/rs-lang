@@ -1,5 +1,5 @@
 import { ApiInst, AuthInst, DictionaryInst } from '../../instances/instances';
-import { BASE_URL, Word } from '../../types';
+import { BASE_URL, Word, WordDictionary } from '../../types';
 
 export class Card {
   //auth: Auth;
@@ -73,7 +73,7 @@ export class Card {
     if (btnAddHardWords) {
       btnAddHardWords.forEach((btn) => {
         btn.addEventListener('click', () => {
-          btn.classList.add('active');
+          btn.classList.add('btn_active');
           const wordId = btn.dataset.id;
           console.log(wordId);
           if (wordId) {
@@ -109,12 +109,40 @@ export class Card {
           if (wordId) {
             //console.log(await this.dict.checkWordInDict(wordId));
             //console.log(await this.checkWordHardOrNot(wordId));
-            await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken());
+            console.log(await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken()));
             //const res = await ApiInst.getWordOfUserByWordId(AuthInst.getUserId(), wordId, AuthInst.getToken());
             //console.log(res);
           }
         });
       });
     }
+  }
+  public async disableListenersToHardWords() {
+    //console.log('disable hard words');
+    const wordsOfUser: WordDictionary[] = await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken());
+    const btnsOfHardWords: NodeListOf<HTMLButtonElement> | null = document.querySelectorAll('.btn_hard');
+    if (btnsOfHardWords) {
+      btnsOfHardWords.forEach((btn) => {
+        //console.log(btn.dataset.id);
+        const id: string | undefined = btn.dataset.id;
+        if (id) {
+          if (this.checkIncludeIdOfWordsDictionary(wordsOfUser, id)) {
+            //console.log(id);
+            btn.classList.add('btn_active');
+            //cloneBtn: HTMLButtonElement = btn.cloneNode(true);
+            //btn.cop
+          }
+        }
+      });
+    }
+  }
+  private checkIncludeIdOfWordsDictionary(arr: WordDictionary[], id: string): boolean {
+    let result = false;
+    arr.forEach((word) => {
+      if (word.wordId === id) {
+        result = true;
+      }
+    });
+    return result;
   }
 }

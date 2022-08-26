@@ -15,10 +15,9 @@ export class Dictionary {
     });
   }*/
   public async init() {
-    this.loadDictionary();
-    await this.loadCardsOfUser();
+    await this.loadDictionary();
   }
-  private loadDictionary() {
+  private async loadDictionary() {
     const main: HTMLDivElement | null = document.querySelector('.container-main');
     if (main) {
       main.innerHTML = '';
@@ -26,16 +25,19 @@ export class Dictionary {
                         <div class="container-words__field">
                         </div>`;
     }
+    await this.loadCardsOfUser();
   }
   private async loadCardsOfUser() {
     const containerWords: HTMLDivElement | null = document.querySelector('.container-words__field');
     const words: Array<WordDictionary> = await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken());
-    //console.log(words);
     if (containerWords) {
+      containerWords.innerHTML = '';
       words.forEach(async (w) => {
         const word: Word = await ApiInst.getWordById(w.wordId);
         containerWords.innerHTML += CardInst.createCard(word);
+        CardInst.loadListenersToButtons();
       });
+      //CardInst.disableListenersToHardWords();
     }
   }
   public async getUsersWords(userId: string): Promise<WordDictionary[]> {

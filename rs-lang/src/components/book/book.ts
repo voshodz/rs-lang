@@ -47,7 +47,6 @@ export class Book {
           group = parseInt(btn.dataset.group);
         }
         const words: Array<Word> = await ApiInst.getWordsWithPageAndGroup(AuthInst.getToken(), 0, group);
-        console.log(words);
         const containerWords: HTMLDivElement | null = document.querySelector('.container-words__field');
         if (containerWords) {
           containerWords.innerHTML = '';
@@ -55,6 +54,7 @@ export class Book {
             containerWords.innerHTML += CardInst.createCard(word);
             CardInst.loadListenersToButtons();
           });
+          CardInst.disableListenersToHardWords();
         }
       });
     });
@@ -78,6 +78,7 @@ export class Book {
             containerWords.innerHTML += CardInst.createCard(word);
             CardInst.loadListenersToButtons();
           });
+          CardInst.disableListenersToHardWords();
         }
       });
     }

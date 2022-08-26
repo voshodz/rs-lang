@@ -116,7 +116,7 @@ export class Api {
       difficulty,
       optional,
     };
-    const res = await fetch(`${BASE}/users/${userId}/words/${wordId}`, {
+    return fetch(`${BASE}/users/${userId}/words/${wordId}`, {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + token,
@@ -124,8 +124,9 @@ export class Api {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
-    });
-    return await res.json();
+    })
+      .then((res) => res.json())
+      .catch((err) => `Word is already added ${err}`);
   };
   public deleteWordforUser = async (userId: string, wordId: string, token: string) => {
     return fetch(`${BASE}/users/${userId}/words/${wordId}`, {

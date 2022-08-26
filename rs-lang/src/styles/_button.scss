@@ -1,12 +1,13 @@
 .btn {
   width: 250px;
   height: 50px;
-  background-color: rgb(190, 215, 167);
+  background-color: rgb(210, 231, 190);
   border: 2px solid black;
   font-size: 24px;
+  color: black;
   cursor: pointer;
-  &.active {
-    background-color: rgb(29, 87, 27);
+  &_active {
+    background-color: rgb(175, 183, 22);
   }
   &_group {
     display: flex;
@@ -15,10 +16,12 @@
     width: 180px;
     background-color: rgb(209, 209, 176);
     &:hover {
+      transition: 0.5s ease-in-out;
       background-color: rgb(90, 84, 84);
-      
+      font-size: 30px;
+      //width: 200px;
     }
-    &.active {
+    &_active {
       background-color: rgb(90, 84, 84);
     }
   }
@@ -28,8 +31,11 @@
     align-items: center;
     width: 130px;
     height: 50px;
-    background-color: rgb(205, 166, 115);
+    //background-color: rgb(205, 166, 115);
     font-size: 12px;
+    /*&.btn_active {
+
+    }*/
     &:hover {
       background-color: rgb(99, 58, 5);
       cursor: pointer;
@@ -49,12 +55,6 @@
       background-color: rgb(223, 214, 198);
     }
   }
-}
-
-.wrapper-btn {
-  display: flex;
-  justify-content: center;
-  gap: 5px;
 }
 
 .btn_login {
