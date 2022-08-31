@@ -1,28 +1,24 @@
-import { ApiInst, AuthInst, DictionaryInst } from '../../instances/instances';
+import { ApiInst, AuthInst } from '../../instances/instances';
 import { BASE_URL, Word, WordDictionary } from '../../types';
 
 export class Card {
-  //auth: Auth;
-
   private markdownOfButtons(wordId: string): string {
     const markDown = `
                       <div class="card__btn-wrapper">
                         <button class="btn btn_hard" data-id=${wordId}>Сложное слово</button>
-                        <button class="btn btn_learned" data-id=${wordId}>Изученное слово</button>
+                        <button class="btn btn_learned" data-id=${wordId}>Добавить слово к изученным</button>
+                        
+                      </div>`;
+    return markDown;
+  }
+  public markdownForDictionary(wordId: string): string {
+    const markDown = `
+                      <div class="card__btn-wrapper">
                         <button class="btn btn_delete" data-id=${wordId}>Удалить слово</button>
                       </div>`;
     return markDown;
   }
-  /*private async checkWordHardOrNot(wordId: string): Promise<string> {
-    //await this.dict.checkExistWorIdOrNotInDict(wordId).then((res) => console.log(res));
-    const res = await DictionaryInst.checkWordInDict(wordId);
-    //console.log(await res);
-    if ((await res) === true) {
-      return 'btn_hard active';
-    } else {
-      return 'btn_hard';
-    }
-  }*/
+
   public markdownOfSelect = `<select class="select">
                             <option value="0">Page 1</option>
                             <option value="1">Page 2</option>
@@ -38,22 +34,46 @@ export class Card {
                             <option value="11">Page 12</option>
                             <option value="12">Page 13</option>
                             <option value="13">Page 14</option>
+                            <option value="14">Page 15</option>
+                            <option value="15">Page 16</option>
+                            <option value="16">Page 17</option>
+                            <option value="17">Page 18</option>
+                            <option value="18">Page 19</option>
+                            <option value="19">Page 20</option>
+                            <option value="20">Page 21</option>
+                            <option value="21">Page 22</option>
+                            <option value="22">Page 23</option>
+                            <option value="23">Page 24</option>
                           </select>`;
   public createCard(word: Word): string {
-    const markdownOfCard = `<div class="card">
-                <div class="card__info" data-id="${word.id}">
-                  
-                  Слово: ${word.word}
-                  <br>
-                  Перевод: ${word.wordTranslate}
-                  <br>
-                  <img src="${BASE_URL}/${word.image}" alt="">
-                  page: ${word.page}
-                  group: ${word.group}
-                </div>
-                ${this.buttonsWithAuthorizationInfo(word.id)}
+    const markdownOfCard = `<div class="card" >
+                              <div class="card__info" data-id="${word.id}"> 
+                                <div class="card__info__text">
+                                  Слово: ${word.word}
+                                  <br>
+                                  Перевод: ${word.wordTranslate}
+                                  <br>
+                                  
+                                  <div class="card__meaning">
+                                      ${word.textMeaning}
+                                      <br>
+                                      ${word.textExample}
+                                      <br>
+                                      <br>
+                                      ${word.textMeaningTranslate}
+                                      <br>
+                                      ${word.textExampleTranslate}
+                                      <br>
+                                  </div>
+                                </div>
+                                
+                              <div class="card__img">
+                                <img src="${BASE_URL}/${word.image}" alt="${word.image}">
+                              </div>
+                            </div>
+                            ${this.buttonsWithAuthorizationInfo(word.id)}
             </div>`;
-    this.loadListenersToButtons();
+    //this.loadListenersToButtons();
     return markdownOfCard;
   }
   private buttonsWithAuthorizationInfo(wordId: string): string {
@@ -63,7 +83,6 @@ export class Card {
     return '<div>Нет авторизации</div>';
   }
   public loadListenersToButtons() {
-    //console.log('loading');
     this.loadListenerAddHardWord();
     this.loadListenerDeleteWord();
     this.loadListenerLearnedWord();
@@ -83,7 +102,7 @@ export class Card {
       });
     }
   }
-  private loadListenerDeleteWord() {
+  public loadListenerDeleteWord() {
     const btnDeleteWords: NodeListOf<HTMLButtonElement> | null = document.querySelectorAll('.btn_delete');
     if (btnDeleteWords) {
       btnDeleteWords.forEach((btn) => {
@@ -103,13 +122,14 @@ export class Card {
     if (btnLearnedWords) {
       btnLearnedWords.forEach((btn) => {
         btn.addEventListener('click', async () => {
-          btn.classList.add('active');
+          btn.classList.add('btn_active');
           const wordId = btn.dataset.id;
           console.log('Learned => ', wordId);
           if (wordId) {
             //console.log(await this.dict.checkWordInDict(wordId));
             //console.log(await this.checkWordHardOrNot(wordId));
-            console.log(await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken()));
+            //console.log(await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken()));
+            await ApiInst.createWordforUser(AuthInst.getUserId(), wordId, AuthInst.getToken(), 'learned', {});
             //const res = await ApiInst.getWordOfUserByWordId(AuthInst.getUserId(), wordId, AuthInst.getToken());
             //console.log(res);
           }
@@ -118,19 +138,31 @@ export class Card {
     }
   }
   public async disableListenersToHardWords() {
-    //console.log('disable hard words');
-    const wordsOfUser: WordDictionary[] = await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken());
+    let wordsOfUser: WordDictionary[] = await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken());
+    wordsOfUser = wordsOfUser.filter((word) => word.difficulty === 'hard');
     const btnsOfHardWords: NodeListOf<HTMLButtonElement> | null = document.querySelectorAll('.btn_hard');
     if (btnsOfHardWords) {
       btnsOfHardWords.forEach((btn) => {
-        //console.log(btn.dataset.id);
         const id: string | undefined = btn.dataset.id;
         if (id) {
           if (this.checkIncludeIdOfWordsDictionary(wordsOfUser, id)) {
             //console.log(id);
             btn.classList.add('btn_active');
-            //cloneBtn: HTMLButtonElement = btn.cloneNode(true);
-            //btn.cop
+          }
+        }
+      });
+    }
+  }
+  public async disableListenersToLearnedWords() {
+    let wordsOfUser: WordDictionary[] = await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken());
+    wordsOfUser = wordsOfUser.filter((word) => word.difficulty === 'learned');
+    const btnsOfHardWords: NodeListOf<HTMLButtonElement> | null = document.querySelectorAll('.btn_learned');
+    if (btnsOfHardWords) {
+      btnsOfHardWords.forEach((btn) => {
+        const id: string | undefined = btn.dataset.id;
+        if (id) {
+          if (this.checkIncludeIdOfWordsDictionary(wordsOfUser, id)) {
+            btn.classList.add('btn_active');
           }
         }
       });
@@ -146,3 +178,14 @@ export class Card {
     return result;
   }
 }
+
+/*private async checkWordHardOrNot(wordId: string): Promise<string> {
+  //await this.dict.checkExistWorIdOrNotInDict(wordId).then((res) => console.log(res));
+  const res = await DictionaryInst.checkWordInDict(wordId);
+  //console.log(await res);
+  if ((await res) === true) {
+    return 'btn_hard active';
+  } else {
+    return 'btn_hard';
+  }
+}*/

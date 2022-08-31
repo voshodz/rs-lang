@@ -126,7 +126,7 @@ export class Api {
       body: JSON.stringify(body),
     })
       .then((res) => res.json())
-      .catch((err) => `Word is already added ${err}`);
+      .catch((err) => console.error(`Word is already added ${err}`));
   };
   public deleteWordforUser = async (userId: string, wordId: string, token: string) => {
     return fetch(`${BASE}/users/${userId}/words/${wordId}`, {

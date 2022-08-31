@@ -1,11 +1,8 @@
 import { ApiInst, AuthInst, CardInst } from '../../instances/instances';
 import { Word } from '../../types';
 import { Auth } from '../auth/auth';
-//const token =
-//  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDIxMTRjODY5ODA3MDAxNWEzYTA3MCIsImlhdCI6MTY2MTA4MDA0OSwiZXhwIjoxNjYxMDk0NDQ5fQ.XgPP6VHAo-wlzzlPCxwSLB6frxQK6zc1KwfyT0bPvrY';
+
 export class Book {
-  //api: Api;
-  //auth: Auth;
   public init() {
     this.initContainerWords();
     this.initSelectOfGroupWords();
@@ -52,9 +49,10 @@ export class Book {
           containerWords.innerHTML = '';
           words.forEach((word) => {
             containerWords.innerHTML += CardInst.createCard(word);
-            CardInst.loadListenersToButtons();
           });
+          CardInst.loadListenersToButtons();
           CardInst.disableListenersToHardWords();
+          CardInst.disableListenersToLearnedWords();
         }
       });
     });

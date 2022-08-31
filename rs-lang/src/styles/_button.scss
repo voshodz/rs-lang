@@ -1,20 +1,23 @@
 .btn {
   width: 250px;
   height: 50px;
-  background-color: rgb(210, 231, 190);
+  background-color: rgb(232, 233, 231);
   border: 2px solid black;
   font-size: 24px;
   color: black;
   cursor: pointer;
+  &.active {
+    background-color: orange;
+  }
   &_active {
-    background-color: rgb(175, 183, 22);
+    background-color: rgb(47, 154, 81);
   }
   &_group {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 180px;
-    background-color: rgb(209, 209, 176);
+    //background-color: rgb(209, 209, 176);
     &:hover {
       transition: 0.5s ease-in-out;
       background-color: rgb(90, 84, 84);
