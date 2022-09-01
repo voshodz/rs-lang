@@ -11,12 +11,36 @@ export class Card {
                       </div>`;
     return markDown;
   }
-  public markdownForDictionary(wordId: string): string {
-    const markDown = `
-                      <div class="card__btn-wrapper">
-                        <button class="btn btn_delete" data-id=${wordId}>Удалить слово</button>
-                      </div>`;
-    return markDown;
+  private createButtonsWithListeners(wordId: string): HTMLDivElement {
+    const cardBtnWrapper = document.createElement('div');
+    cardBtnWrapper.classList.add('card__btn-wrapper');
+    cardBtnWrapper.appendChild(this.createBtnAddToHard(wordId));
+    cardBtnWrapper.appendChild(this.createBtnAddToLearned(wordId));
+    return cardBtnWrapper;
+  }
+  private createBtnAddToHard(wordId: string): HTMLButtonElement {
+    const btn = document.createElement('button');
+    btn.classList.add('btn');
+    btn.classList.add('btn_hard');
+    btn.dataset.id = wordId;
+    btn.innerHTML = 'Сложное слово';
+    btn.addEventListener('click', async () => {
+      btn.classList.add('btn_active');
+      await ApiInst.createWordforUser(AuthInst.getUserId(), wordId, AuthInst.getToken(), 'hard', {});
+    });
+    return btn;
+  }
+  private createBtnAddToLearned(wordId: string): HTMLButtonElement {
+    const btn = document.createElement('button');
+    btn.classList.add('btn');
+    btn.classList.add('btn_learned');
+    btn.dataset.id = wordId;
+    btn.innerHTML = 'Изученое слово';
+    btn.addEventListener('click', async () => {
+      btn.classList.add('btn_active');
+      await ApiInst.createWordforUser(AuthInst.getUserId(), wordId, AuthInst.getToken(), 'learned', {});
+    });
+    return btn;
   }
 
   public markdownOfSelect = `<select class="select">
@@ -45,8 +69,8 @@ export class Card {
                             <option value="22">Page 23</option>
                             <option value="23">Page 24</option>
                           </select>`;
-  public createCard(word: Word): string {
-    const markdownOfCard = `<div class="card" >
+  public createCard(word: Word): HTMLDivElement {
+    const markdownOfCard = `
                               <div class="card__info" data-id="${word.id}"> 
                                 <div class="card__info__text">
                                   Слово: ${word.word}
@@ -64,23 +88,28 @@ export class Card {
                                       <br>
                                       ${word.textExampleTranslate}
                                       <br>
+                                      ${word.audioExample}
                                   </div>
                                 </div>
                                 
                               <div class="card__img">
                                 <img src="${BASE_URL}/${word.image}" alt="${word.image}">
                               </div>
-                            </div>
-                            ${this.buttonsWithAuthorizationInfo(word.id)}
-            </div>`;
-    //this.loadListenersToButtons();
-    return markdownOfCard;
+                            </div
+                            `;
+    const cardDiv = document.createElement('div');
+    cardDiv.classList.add('card');
+    cardDiv.innerHTML = markdownOfCard;
+    cardDiv.appendChild(this.buttonsWithAuthorizationInfo(word.id));
+    return cardDiv;
   }
-  private buttonsWithAuthorizationInfo(wordId: string): string {
+  private buttonsWithAuthorizationInfo(wordId: string): HTMLDivElement {
     if (AuthInst.checkAuthorization()) {
-      return this.markdownOfButtons(wordId);
+      return this.createButtonsWithListeners(wordId);
     }
-    return '<div>Нет авторизации</div>';
+    const noAuthButtons = document.createElement('div');
+    noAuthButtons.innerHTML = 'Нет Авторизации';
+    return noAuthButtons;
   }
   public loadListenersToButtons() {
     this.loadListenerAddHardWord();

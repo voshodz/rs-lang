@@ -1,4 +1,4 @@
-import { ApiInst, AuthInst, CardInst, DictionaryInst } from '../../instances/instances';
+import { ApiInst, AuthInst, CardInst, DictionaryInst, UtilInst } from '../../instances/instances';
 import { BASE_URL, Word, WordDictionary } from '../../types';
 
 export class Dictionary {
@@ -21,22 +21,95 @@ export class Dictionary {
     const main: HTMLDivElement | null = document.querySelector('.container-main');
     if (main) {
       main.innerHTML = '';
-      main.innerHTML += `<div class="container-words">
-                        <div class="container-words__field">
-                        </div>`;
+      main.appendChild(this.createGroupBtnsWithListener());
+      main.appendChild(this.createTypeBtnsForDictionary());
+      main.appendChild(this.createContainerWords());
     }
-    await this.loadCardsOfHardWordsOfUser();
+    //await this.loadCardsOfHardWordsOfUser();
   }
-  private async loadCardsOfHardWordsOfUser() {
+  private createGroupBtnsWithListener(): HTMLDivElement {
+    const wrapperBtn = document.createElement('div');
+    wrapperBtn.classList.add('wrapper-btn');
+    for (let i = 0; i < 6; i++) {
+      const groupBtn = this.createGroupBtn(i);
+      if (i === 0) {
+        groupBtn.classList.add('active');
+      }
+      wrapperBtn.appendChild(groupBtn);
+    }
+    return wrapperBtn;
+  }
+  private createContainerWords(): HTMLDivElement {
+    const containerWords = document.createElement('div');
+    containerWords.className = 'container-words';
+    const containerWordsField = document.createElement('div');
+    containerWordsField.className = `container-words__field`;
+    containerWords.appendChild(containerWordsField);
+    return containerWords;
+  }
+  private createGroupBtn(group: number): HTMLDivElement {
+    const btnGroup = document.createElement('div');
+    btnGroup.classList.add('btn');
+    btnGroup.classList.add('btn_group');
+    btnGroup.dataset.group = group.toString();
+    btnGroup.innerHTML = `Group ${group + 1}`;
+    btnGroup.addEventListener('click', async () => {
+      const btns: NodeListOf<HTMLDivElement> | null = document.querySelectorAll('.btn_group');
+      btns.forEach((btn) => {
+        btn.classList.remove('active');
+      });
+      btnGroup.classList.add('active');
+      UtilInst.cleanContainerWords();
+      const typeBtnHard = document.querySelector('.type-btns__hard');
+      const typeBtnLearned = document.querySelector('.type-btns__learned');
+      if (typeBtnHard && typeBtnLearned) {
+        typeBtnHard.classList.remove('active');
+        typeBtnLearned.classList.remove('active');
+      }
+      //await this.loadCardsOfHardWordsOfUser(group);
+    });
+    return btnGroup;
+  }
+  private createTypeBtnsForDictionary(): HTMLDivElement {
+    const wrapperTypeBtns = document.createElement('div');
+    wrapperTypeBtns.classList.add('type-btns');
+    const btnTypeHard = document.createElement('div');
+    btnTypeHard.classList.add('type-btns__hard');
+    btnTypeHard.innerHTML = 'Сложные слова';
+
+    btnTypeHard.addEventListener('click', async () => {
+      document.querySelector('.type-btns__learned')?.classList.remove('active');
+      btnTypeHard.classList.add('active');
+      await this.loadCardsOfUserWithType(this.getCurrentActiveGroup(), 'hard');
+    });
+    const btnTypeLearned = document.createElement('div');
+    btnTypeLearned.classList.add('type-btns__learned');
+    btnTypeLearned.innerHTML = 'Изученные слова';
+
+    btnTypeLearned.addEventListener('click', async () => {
+      document.querySelector('.type-btns__hard')?.classList.remove('active');
+      btnTypeLearned.classList.add('active');
+      await this.loadCardsOfUserWithType(this.getCurrentActiveGroup(), 'learned');
+    });
+    wrapperTypeBtns.appendChild(btnTypeHard);
+    wrapperTypeBtns.appendChild(btnTypeLearned);
+    return wrapperTypeBtns;
+  }
+  private async loadCardsOfUserWithType(group: number, type = 'hard') {
     const containerWords: HTMLDivElement | null = document.querySelector('.container-words__field');
-    const words: Array<WordDictionary> = await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken());
-    //words = this.filterHardWords(words);
-    //words = this.filterLearnedWords(words);
+    let words: Array<WordDictionary> = await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken());
+    if (type === 'hard') {
+      words = words.filter((word) => word.difficulty === 'hard');
+    } else {
+      words = words.filter((word) => word.difficulty === 'learned');
+    }
     if (containerWords) {
       containerWords.innerHTML = '';
       words.forEach(async (w) => {
         const word: Word = await ApiInst.getWordById(w.wordId);
-        containerWords.appendChild(this.createCardInDictionary(word));
+        if (word.group === group) {
+          containerWords.appendChild(this.createCardInDictionary(word));
+        }
       });
     }
   }
@@ -67,7 +140,7 @@ export class Dictionary {
     btnDelete.classList.add('btn');
     btnDelete.classList.add('btn_delete');
     btnDelete.dataset.id = wordId;
-    btnDelete.innerHTML = 'Удалить из сложных';
+    btnDelete.innerHTML = 'Восстановить слово';
     btnDelete.addEventListener('click', async () => {
       btnDelete.classList.add('btn_active');
       await ApiInst.deleteWordforUser(AuthInst.getUserId(), wordId, AuthInst.getToken());
@@ -95,10 +168,17 @@ export class Dictionary {
     });
     return await result;
   }
-  private filterHardWords(data: Array<WordDictionary>): Array<WordDictionary> {
-    return data.filter((word) => word.difficulty === 'hard');
-  }
-  private filterLearnedWords(data: Array<WordDictionary>): Array<WordDictionary> {
-    return data.filter((word) => word.difficulty === 'learned');
+  private getCurrentActiveGroup(): number {
+    let result = 0;
+    const btns: NodeListOf<HTMLDivElement> | null = document.querySelectorAll('.btn_group');
+    btns.forEach((btn) => {
+      if (btn.classList.contains('active')) {
+        const group: string | undefined = btn.dataset.group;
+        if (group) {
+          result = parseInt(group);
+        }
+      }
+    });
+    return result;
   }
 }

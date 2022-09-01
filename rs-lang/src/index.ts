@@ -31,4 +31,7 @@ document.querySelector('.click-me')?.addEventListener('click', async () => {
   const data = await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken());
   //await ApiInst.createWordforUser(AuthInst.getUserId(), AuthInst.ge)
   console.log(data);
+  //console.log(await ApiInst.getWordById('5e9f5ee35eb9e72bc21af4a8'));
+  //const dataPage = await ApiInst.getWordsWithGroup(AuthInst.getToken(), 0);
+  //console.log(dataPage);
 });

@@ -16,17 +16,17 @@ export class Book {
     if (main) {
       main.innerHTML += `
                           <div class="wrapper-btn">
-                          <div class="btn btn_group" data-group="0">Group1</div>
-                          <div class="btn btn_group" data-group="1">Group2</div>
-                          <div class="btn btn_group" data-group="2">Group3</div>
-                          <div class="btn btn_group" data-group="3">Group4</div>
-                          <div class="btn btn_group" data-group="4">Group5</div>
-                          <div class="btn btn_group" data-group="5">Group6</div>
-                        </div>
-                          <div class="container-words">
-                          <div class="container-words__select">
-                            ${CardInst.markdownOfSelect}
+                            <div class="btn btn_group" data-group="0">Group1</div>
+                            <div class="btn btn_group" data-group="1">Group2</div>
+                            <div class="btn btn_group" data-group="2">Group3</div>
+                            <div class="btn btn_group" data-group="3">Group4</div>
+                            <div class="btn btn_group" data-group="4">Group5</div>
+                            <div class="btn btn_group" data-group="5">Group6</div>
                           </div>
+                          <div class="container-words">
+                            <div class="container-words__select">
+                              ${CardInst.markdownOfSelect}
+                            </div>
                           <div class="container-words__field">
                           </div>
                         </div>`;
@@ -48,9 +48,9 @@ export class Book {
         if (containerWords) {
           containerWords.innerHTML = '';
           words.forEach((word) => {
-            containerWords.innerHTML += CardInst.createCard(word);
+            //containerWords.innerHTML += CardInst.createCard(word);
+            containerWords.appendChild(CardInst.createCard(word));
           });
-          CardInst.loadListenersToButtons();
           CardInst.disableListenersToHardWords();
           CardInst.disableListenersToLearnedWords();
         }
@@ -73,8 +73,9 @@ export class Book {
             group
           );
           words.forEach((word) => {
-            containerWords.innerHTML += CardInst.createCard(word);
-            CardInst.loadListenersToButtons();
+            //containerWords.innerHTML += CardInst.createCard(word);
+            containerWords.appendChild(CardInst.createCard(word));
+            //CardInst.loadListenersToButtons();
           });
           CardInst.disableListenersToHardWords();
         }
