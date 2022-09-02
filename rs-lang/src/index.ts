@@ -1,6 +1,10 @@
 import { Auth } from './components/auth/auth';
 import { ApiInst, AuthInst, BookInst, DictionaryInst } from './instances/instances';
+//import { Toast } from 'bootstrap';
+import * as bootstrap from 'bootstrap';
 import './styles/index.scss';
+//import '../scss/styles.scss';
+//import 'bootstrap/scss/bootstrap';
 
 const btnReg = document.querySelector('.btn_create');
 btnReg?.addEventListener('click', () => {

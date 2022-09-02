@@ -39,20 +39,29 @@ export class Dictionary {
     }
     return wrapperBtn;
   }
-  private createContainerWords(): HTMLDivElement {
-    const containerWords = document.createElement('div');
-    containerWords.className = 'container-words';
-    const containerWordsField = document.createElement('div');
-    containerWordsField.className = `container-words__field`;
-    containerWords.appendChild(containerWordsField);
-    return containerWords;
-  }
   private createGroupBtn(group: number): HTMLDivElement {
+    const textoFLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+    const textOfDescriptions = [
+      '<b>Easy<b> 1-600',
+      '<b>Easy<b> 601-1200',
+      '<b>Medium<b> 1201-1800',
+      '<b>Medium<b> 1801-2400',
+      '<b>Hard<b> 2401-3000',
+      '<b>Hard<b> 3001-3600',
+    ];
     const btnGroup = document.createElement('div');
-    btnGroup.classList.add('btn');
+    const btnLevel = document.createElement('div');
+    btnLevel.classList.add('btn_group__level');
+    btnLevel.innerHTML = textoFLevels[group];
+    const btnText = document.createElement('div');
+    btnText.classList.add('btn_group__text');
+    btnText.innerHTML = textOfDescriptions[group];
+    //btnGroup.classList.add('btn');
     btnGroup.classList.add('btn_group');
     btnGroup.dataset.group = group.toString();
-    btnGroup.innerHTML = `Group ${group + 1}`;
+    //btnGroup.innerHTML = `Group ${group + 1}`;
+    btnGroup.appendChild(btnText);
+    btnGroup.appendChild(btnLevel);
     btnGroup.addEventListener('click', async () => {
       const btns: NodeListOf<HTMLDivElement> | null = document.querySelectorAll('.btn_group');
       btns.forEach((btn) => {
@@ -69,6 +78,14 @@ export class Dictionary {
       //await this.loadCardsOfHardWordsOfUser(group);
     });
     return btnGroup;
+  }
+  private createContainerWords(): HTMLDivElement {
+    const containerWords = document.createElement('div');
+    containerWords.className = 'container-words';
+    const containerWordsField = document.createElement('div');
+    containerWordsField.className = `container-words__field`;
+    containerWords.appendChild(containerWordsField);
+    return containerWords;
   }
   private createTypeBtnsForDictionary(): HTMLDivElement {
     const wrapperTypeBtns = document.createElement('div');

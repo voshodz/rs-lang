@@ -12,22 +12,7 @@
   &_active {
     background-color: rgb(47, 154, 81);
   }
-  &_group {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 180px;
-    //background-color: rgb(209, 209, 176);
-    &:hover {
-      //transition: 0.5s ease-in-out;
-      background-color: rgb(90, 84, 84);
-      font-size: 24px;
-      //width: 200px;
-    }
-    &_active {
-      background-color: rgb(90, 84, 84);
-    }
-  }
+
   &_hard,&_learned, &_delete {
     display: flex;
     justify-content: center;
@@ -56,6 +41,46 @@
       font-size: 24px;
       transition: 0.5s ease-in-out;
       background-color: rgb(223, 214, 198);
+    }
+  }
+}
+
+.btn_group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 180px;
+  height: 70px;
+  border: 2px solid rgb(84, 82, 82);
+  border-radius: 8%;
+  font-size: 14px;
+  &__text {
+    display: flex;
+    font-size: 18px;
+    max-width: 50px;
+  }
+  &__level {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    width: 70px;
+    height: 100%;
+    background: rgb(170, 172, 193);
+    border-radius: 35% 30%;
+  }
+  &:hover {
+    //transition: 0.5s ease-in-out;
+    //background-color: rgb(90, 84, 84);
+    border: 2px solid rgb(6, 6, 6);
+    cursor: pointer;
+    .btn_group__level {
+      background: rgb(5, 16, 135);
+    }
+  }
+  &.active {
+    .btn_group__level {
+      background: rgb(5, 16, 135);
     }
   }
 }
