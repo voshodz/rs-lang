@@ -6,19 +6,20 @@ export class Dictionary {
   constructor() {
     this.wordsOfUser = [];
   }
-  /*public async checkExistWorIdOrNotInDict(wordId: string): Promise<boolean> {
-    return await this.api.getWordOfUserByWordId(this.auth.getUserId(), wordId, this.auth.getToken()).then((res) => {
-      if (res.status !== 200) {
-        return false;
-      }
-      return true;
-    });
-  }*/
   public async init() {
     this.loadDictionary();
   }
   private async loadDictionary() {
+    UtilInst.cleanMainPage();
+    UtilInst.AddContainerMainToMainPage();
     const main: HTMLDivElement | null = document.querySelector('.container-main');
+    if (!AuthInst.checkAuthorization()) {
+      if (main) {
+        AuthInst.loadLogin();
+        //main.innerHTML = `<div>Нет авторизации</div`;
+        return;
+      }
+    }
     if (main) {
       main.innerHTML = '';
       main.appendChild(this.createGroupBtnsWithListener());
@@ -130,19 +131,35 @@ export class Dictionary {
       });
     }
   }
-  public createCardInDictionary(word: Word): HTMLDivElement {
+  private createCardInDictionary(word: Word): HTMLDivElement {
     const cardDiv: HTMLDivElement = document.createElement('div');
     cardDiv.classList.add('card');
-    cardDiv.innerHTML = `<div class="card__info" data-id="${word.id}">                    
-                        Слово: ${word.word}
-                        <br>
-                        Перевод: ${word.wordTranslate}
-                        <br>
-                        <img src="${BASE_URL}/${word.image}" alt="">
-                        page: ${word.page}
-                        group: ${word.group}
-                      </div>
-                        `;
+    cardDiv.innerHTML = `
+                          <div class="card__info" data-id="${word.id}"> 
+                            <div class="card__info__text">
+                              Слово: ${word.word}
+                              <br>
+                              Перевод: ${word.wordTranslate}
+                              <br> 
+                              <div class="card__meaning">
+                                  ${word.textMeaning}
+                                  <br>
+                                  ${word.textExample}
+                                  <br>
+                                  <br>
+                                  ${word.textMeaningTranslate}
+                                  <br>
+                                  ${word.textExampleTranslate}
+                                  <br>
+                                  ${word.audioExample}
+                              </div>
+                            </div>
+                            
+                          <div class="card__img">
+                            <img src="${BASE_URL}/${word.image}" alt="${word.image}">
+                          </div>
+                        </div
+                         `;
     cardDiv.appendChild(this.createCardBtnWrapper(word.id));
     return cardDiv;
   }

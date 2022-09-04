@@ -1,11 +1,22 @@
 import { Auth } from './components/auth/auth';
-import { ApiInst, AuthInst, BookInst, DictionaryInst } from './instances/instances';
+import {
+  AboutPageInst,
+  ApiInst,
+  AuthInst,
+  BookInst,
+  DictionaryInst,
+  MainPageInst,
+  ToastInst,
+} from './instances/instances';
 //import { Toast } from 'bootstrap';
 import * as bootstrap from 'bootstrap';
 import './styles/index.scss';
-//import '../scss/styles.scss';
-//import 'bootstrap/scss/bootstrap';
 
+AuthInst.initAuthorization();
+const btnHeader = document.querySelector('.header__icon');
+btnHeader?.addEventListener('click', () => {
+  MainPageInst.loadMainPage();
+});
 const btnReg = document.querySelector('.btn_create');
 btnReg?.addEventListener('click', () => {
   console.log('reg');
@@ -19,9 +30,6 @@ btnLogin?.addEventListener('click', () => {
 });
 const btnBook = document.querySelector('.btn_book');
 btnBook?.addEventListener('click', () => {
-  console.log('auth');
-  AuthInst.loadLogin();
-  console.log(AuthInst.getToken());
   BookInst.init();
 });
 const btnDict = document.querySelector('.btn_dictionary');
@@ -29,7 +37,11 @@ btnDict?.addEventListener('click', async () => {
   console.log('dicitonary');
   await DictionaryInst.init();
 });
-
+const btnAbout = document.querySelector('.btn_about');
+btnAbout?.addEventListener('click', () => {
+  console.log('about page clicked');
+  AboutPageInst.loadAboutPage();
+});
 document.querySelector('.click-me')?.addEventListener('click', async () => {
   console.log('Here words!');
   const data = await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken());
@@ -39,3 +51,13 @@ document.querySelector('.click-me')?.addEventListener('click', async () => {
   //const dataPage = await ApiInst.getWordsWithGroup(AuthInst.getToken(), 0);
   //console.log(dataPage);
 });
+ToastInst.showToast();
+/*const toastTrigger: any = document.getElementById('liveToastBtn');
+const toastLiveExample: any = document.getElementById('liveToast');
+if (toastTrigger) {
+  toastTrigger.addEventListener('click', () => {
+    const toast = new bootstrap.Toast(toastLiveExample);
+
+    toast.show();
+  });
+}*/

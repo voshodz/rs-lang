@@ -207,14 +207,3 @@ export class Card {
     return result;
   }
 }
-
-/*private async checkWordHardOrNot(wordId: string): Promise<string> {
-  //await this.dict.checkExistWorIdOrNotInDict(wordId).then((res) => console.log(res));
-  const res = await DictionaryInst.checkWordInDict(wordId);
-  //console.log(await res);
-  if ((await res) === true) {
-    return 'btn_hard active';
-  } else {
-    return 'btn_hard';
-  }
-}*/

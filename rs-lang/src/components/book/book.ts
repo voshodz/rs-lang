@@ -4,11 +4,19 @@ import { Auth } from '../auth/auth';
 
 export class Book {
   public init() {
+    UtilInst.cleanMainPage();
     this.initContainerWords();
-    this.initSelectOfGroupWords();
+    //this.initSelectOfGroupWords();
     this.initGroupButtons();
   }
+
   private initContainerWords() {
+    const mainPage = document.querySelector('.main-page');
+    if (mainPage) {
+      const containerMain = document.createElement('div');
+      containerMain.classList.add('container-main');
+      mainPage.appendChild(containerMain);
+    }
     const main: HTMLDivElement | null = document.querySelector('.container-main');
     if (main) {
       main.innerHTML = '';

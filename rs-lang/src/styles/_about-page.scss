@@ -1,0 +1,31 @@
+.about-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('https://p0.pikist.com/photos/885/960/trees-tree-conifer-cones-pine-pine-cones-nature-the-beauty-of-nature-landscape.jpg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  min-height: 100vh;
+}
+.about-page__info {
+  width: 300px;
+  height: 500px;
+  border: 2px solid rgb(6, 6, 5);
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.about-page__img {
+  display: flex;
+}
+.about-page__img img {
+  border-radius: 60%;
+  width: 300px;
+}
+.about-page__text {
+  display: flex;
+  font-size: 24px;
+  justify-content: center;
+  
+}

@@ -1,9 +1,14 @@
-.main-page {
-  display: flex;
-  //margin: 0 auto;
-}
 
-.navigation {
-  display: flex;
-  flex-direction: column;
+.main-page {
+  &__img img{
+    width: 560px;
+  }
+  &__text {
+    font-size: 40px;
+    padding-top: 100px;
+  }
+  &__wrapper {
+    display: flex;
+    padding-top: 220px;
+  }
 }

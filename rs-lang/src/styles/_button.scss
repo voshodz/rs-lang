@@ -12,7 +12,12 @@
   &_active {
     background-color: rgb(47, 154, 81);
   }
-
+  &_book, &_dictionary, &_about {
+    &:hover {
+      cursor: pointer;
+      color: black;
+    }
+  }
   &_hard,&_learned, &_delete {
     display: flex;
     justify-content: center;
@@ -56,7 +61,7 @@
   font-size: 14px;
   &__text {
     display: flex;
-    font-size: 18px;
+    font-size: 14px;
     max-width: 50px;
   }
   &__level {
