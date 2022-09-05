@@ -12,7 +12,7 @@
   &_active {
     background-color: rgb(47, 154, 81);
   }
-  &_book, &_dictionary, &_about {
+  &_book, &_dictionary, &_about, &_audiogame {
     &:hover {
       cursor: pointer;
       color: black;
@@ -30,7 +30,7 @@
 
     }*/
     &:hover {
-      background-color: rgb(99, 58, 5);
+      //background-color: rgb(99, 58, 5);
       cursor: pointer;
     }
   }

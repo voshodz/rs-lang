@@ -77,7 +77,7 @@ export class Card {
                                   <br>
                                   Перевод: ${word.wordTranslate}
                                   <br>
-                                  
+                                
                                   <div class="card__meaning">
                                       ${word.textMeaning}
                                       <br>
@@ -88,13 +88,33 @@ export class Card {
                                       <br>
                                       ${word.textExampleTranslate}
                                       <br>
-                                      ${word.audioExample}
                                   </div>
+                                  <div class="card__audio">
+                                      <figure>
+                                        <figcaption>Слово:</figcaption>
+                                        <audio
+                                            controls
+                                            src="${ApiInst.getBASE_URL()}/${word.audio}">
+                                                Your browser does not support the
+                                                <code>audio</code> element.
+                                        </audio>
+                                      </figure>
+                                      <figure>
+                                        <figcaption>Аудио пример:</figcaption>
+                                        <audio
+                                            controls
+                                            src="${ApiInst.getBASE_URL()}/${word.audioExample}">
+                                                Your browser does not support the
+                                                <code>audio</code> element.
+                                        </audio>
+                                      </figure>
+                                    </div>
                                 </div>
                                 
                               <div class="card__img">
                                 <img src="${BASE_URL}/${word.image}" alt="${word.image}">
                               </div>
+                              
                             </div
                             `;
     const cardDiv = document.createElement('div');
@@ -108,7 +128,7 @@ export class Card {
       return this.createButtonsWithListeners(wordId);
     }
     const noAuthButtons = document.createElement('div');
-    noAuthButtons.innerHTML = 'Нет Авторизации';
+    noAuthButtons.innerHTML = '';
     return noAuthButtons;
   }
   public loadListenersToButtons() {

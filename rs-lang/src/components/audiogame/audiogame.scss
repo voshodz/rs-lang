@@ -1,0 +1,147 @@
+.audio-game {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  min-width: 95vw;
+  height: 95vh;
+  background: rgb(142, 161, 142);
+  background-image: url('https://img.desktopwallpapers.ru/nature/pics/wide/1920x1080/73d1e72941125663b4c805db78c4842a.jpg');
+  &__info-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: flex-start;
+  }
+  &__span-word {
+    font-size: 24px;
+  }
+  &__icon-small {
+    width: 45px;
+    height: 45px;
+    fill: rgb(109, 170, 125);
+    &:hover {
+      fill: rgb(53, 148, 79);
+    }
+  }
+  &__icon {
+    padding: 10px;
+    width: 200px;
+    width: 200px;
+    background: white;
+    border-radius: 50%;
+    //display: flex;
+    //justify-content: center;
+    margin: 0 auto;
+    margin-bottom: 150px;
+  }
+  &__svg {
+    fill: rgb(67, 67, 151);
+    &:hover {
+      cursor: pointer;
+      fill: rgb(21, 21, 129);
+    }
+  }
+  &__answers {
+    &-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      min-width: 900px;
+      //height: 700px;
+    }
+    &-right {
+      display: flex;
+      flex-direction: column;
+      width: 500px;
+      //height: 200px;
+      background: white;
+    }
+    &-wrong {
+      display: flex;
+      flex-direction: column;
+      width: 500px;
+      //height: 200px;
+      background: white;
+    }
+  }
+  &__audio {
+    display: flex;
+    justify-content: center;
+  }
+  &__next {
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    width: 250px;
+    height: 50px;
+    background: rgb(38, 18, 154);
+    border: 2px solid black;
+    &:hover {
+      cursor: pointer;
+      background: rgb(20, 7, 91);
+    }
+  }
+  &__options {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-bottom: 50px;
+    &__word {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      font-weight: 600;
+      min-width: 160px;
+      padding: 2px;
+      height: 50px;
+      background: white;
+      border: 2px solid black;
+      transition: 0.3s ease-in;
+      border-radius: 4px;
+      &:hover {
+        background: rgb(186, 177, 177);
+      }
+    }
+    &__right-option {
+      background: green;
+    }
+    &__wrong-option {
+      background: red;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &__select {
+    width: 200px;
+    font-size: 24px;
+  }
+  &__level {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 400px;
+    height: 330px;
+    background: white;
+    &__submit {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 163px;
+      height: 50px;
+      background: #2633ac;
+      color: white;
+      font-size: 24px;
+      &:hover {
+        cursor: pointer;
+        background: #162291;;
+      }
+    }
+  }
+}

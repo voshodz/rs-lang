@@ -6,6 +6,7 @@ import './login.scss';
 export class Auth {
   token = '';
   userId = '';
+  email = '';
   main: HTMLElement | null;
   constructor() {
     this.main = document.querySelector('.container-main');
@@ -14,10 +15,10 @@ export class Auth {
     }
   }
   initAuthorization() {
-    const registerForm: HTMLDivElement | null = document.querySelector('.container-register');
+    const containerRegister: HTMLDivElement | null = document.querySelector('.container-register');
     if (!this.checkAuthorization()) {
-      if (registerForm) {
-        registerForm.innerHTML = '';
+      if (containerRegister) {
+        containerRegister.innerHTML = '';
         const btnRegister = document.createElement('div');
         btnRegister.classList.add('btn');
         btnRegister.classList.add('btn_create');
@@ -26,7 +27,7 @@ export class Auth {
         btnRegister.addEventListener('click', () => {
           this.loadRegister();
         });
-        registerForm.appendChild(btnRegister);
+        containerRegister.appendChild(btnRegister);
         const btnLogin = document.createElement('div');
         btnLogin.classList.add('btn');
         btnLogin.classList.add('btn_login');
@@ -35,13 +36,17 @@ export class Auth {
         btnLogin.addEventListener('click', () => {
           this.loadLogin();
         });
-        registerForm.appendChild(btnLogin);
+        containerRegister.appendChild(btnLogin);
       }
       return;
     }
     /***Succes Authorization** */
-    if (registerForm) {
-      registerForm.innerHTML = '';
+    if (containerRegister) {
+      containerRegister.innerHTML = '';
+      const emailInfo = document.createElement('div');
+      emailInfo.classList.add('email__info');
+      emailInfo.innerHTML = this.getEmail();
+      containerRegister.appendChild(emailInfo);
       const btnExit = document.createElement('div');
       btnExit.classList.add('btn_exit');
       //btnExit.classList.add('btn-primary');
@@ -51,7 +56,7 @@ export class Auth {
         MainPageInst.loadMainPage();
         this.initAuthorization();
       });
-      registerForm.appendChild(btnExit);
+      containerRegister.appendChild(btnExit);
     }
   }
   public checkAuthorization(): boolean {
@@ -63,10 +68,19 @@ export class Auth {
   private setTokenAndUserIdFromLocalStorage() {
     const token: string | null = localStorage.getItem('token');
     const userId: string | null = localStorage.getItem('userId');
-    if (token && userId) {
+    const email: string | null = localStorage.getItem('email');
+    //const email: string | null
+    if (token && userId && email) {
+      this.setEmail(email);
       this.setToken(token);
       this.setUserId(userId);
     }
+  }
+  public setEmail(email: string) {
+    this.email = email;
+  }
+  public getEmail(): string {
+    return this.email;
   }
   public getToken(): string {
     return this.token;
@@ -84,25 +98,26 @@ export class Auth {
     UtilInst.cleanMainPage();
     UtilInst.AddContainerMainToMainPage();
     const main = document.querySelector('.container-main');
-    //UtilInst.
     if (main) {
-      main.innerHTML = `<form action="#" method="#" id="form">
+      main.innerHTML = `<div class="wrapper-register">
+                            <form action="#" method="#" id="form">
                             <div>
                               <label>
                                 Ваш email для входа:
-                                <input type="text" name="name" value="abc2@mail.ru" autocomplete="off">
+                                <input type="text" name="name" value="abc2@mail.ru" >
                               </label>
                             </div>
                             <div>
                               <label>
                                 Ваш пароль:
-                                <input type="text" name="password" value="kolorit1313" autocomplete="off">
+                                <input type="password" name="password" value="kolorit1313" autocomplete="off">
                               </label>
                             </div>                     
                             <div>
-                              <button type="submit">Отправить</button>
+                              <button class="register-button" type="submit">Отправить</button>
                             </div>
-                          </form>`;
+                          </form>
+                          </div>`;
     }
     this.loadListenertoLoginForm();
   }
@@ -111,13 +126,15 @@ export class Auth {
     if (formInfo) {
       formInfo.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const name: HTMLInputElement | null = formInfo.querySelector('[name="name"]');
+        const email: HTMLInputElement | null = formInfo.querySelector('[name="name"]');
         const password: HTMLInputElement | null = formInfo.querySelector('[name="password"]');
-        if (name && password) {
-          await ApiInst.loginUser(name.value, password.value)
+        if (email && password) {
+          await ApiInst.loginUser(email.value, password.value)
             .then(async (res) => {
               const data: AuthUser = await res.json();
               console.log(data);
+              localStorage.setItem('email', email.value);
+              this.setEmail(email.value);
               this.successAuth(data);
             })
             .catch((err) => {
@@ -138,6 +155,7 @@ export class Auth {
   private successAuth(data: AuthUser) {
     this.setToken(data.token);
     this.setUserId(data.userId);
+    //this.setEmail(data.)
     localStorage.setItem('token', data.token);
     localStorage.setItem('userId', data.userId);
     this.initAuthorization();
@@ -152,19 +170,19 @@ export class Auth {
     UtilInst.AddContainerMainToMainPage();
     const main = document.querySelector('.container-main');
     if (main) {
-      main.innerHTML = this.markdownRegisterForm;
+      main.innerHTML = this.markdowncontainerRegister;
     }
-    this.loadListenerToRegisterForm();
+    this.loadListenerTocontainerRegister();
   }
-  private loadListenerToRegisterForm() {
+  private loadListenerTocontainerRegister() {
     const regForm: HTMLElement | null = document.getElementById('register-form');
     if (regForm) {
       regForm.addEventListener('submit', (e) => {
-        this.handlerToRegisterForm(regForm, e);
+        this.handlerTocontainerRegister(regForm, e);
       });
     }
   }
-  private async handlerToRegisterForm(form: HTMLElement, event: SubmitEvent) {
+  private async handlerTocontainerRegister(form: HTMLElement, event: SubmitEvent) {
     event.preventDefault();
     const name: HTMLInputElement | null = form.querySelector('[name="name"]');
     const email: HTMLInputElement | null = form.querySelector('[name="email"]');
@@ -181,6 +199,7 @@ export class Auth {
       }
       if (result.status === 422) {
         alert('Incorrect input data, pls try again');
+        localStorage.setItem('email', email.value);
         this.loadRegister();
         return;
       }
@@ -188,13 +207,15 @@ export class Auth {
         UtilInst.cleanMain();
         await ApiInst.loginUser(email.value, password.value).then(async (res) => {
           const data: AuthUser = await res.json();
-          console.log(data);
+          localStorage.setItem('email', email.value);
+          this.setEmail(email.value);
           this.successAuth(data);
         });
       }
     }
   }
-  markdownRegisterForm = `
+  markdowncontainerRegister = `
+          <div class="wrapper-register">
                 <form action="#" method="#" id="register-form">
                   <div>
                     <label>
@@ -215,7 +236,8 @@ export class Auth {
                     </label>
                   </div>                     
                   <div>
-                    <button type="submit">Отправить</button>
+                    <button class="register-button" type="submit">Регистрация</button>
                   </div>
-                </form>`;
+                </form>
+            </div>`;
 }

@@ -5,6 +5,7 @@ export type Word = {
   page: number;
   word: string;
   image: string;
+  audio: string;
   audioMeaning: string;
   audioExample: string;
   textMeaning: string;

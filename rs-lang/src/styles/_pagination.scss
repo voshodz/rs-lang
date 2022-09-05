@@ -9,3 +9,12 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+.page-item {
+  &:hover {
+    cursor: pointer;
+  }
+  &_active a {
+    background: rgb(54, 149, 25);
+  }
+}

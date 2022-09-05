@@ -1,13 +1,10 @@
-import { ApiInst, AuthInst, CardInst, DictionaryInst, UtilInst } from '../../instances/instances';
+import { ApiInst, AudioGameInst, AuthInst, CardInst, UtilInst } from '../../instances/instances';
 import { Word } from '../../types';
-import { Auth } from '../auth/auth';
 
 export class Book {
   public init() {
     UtilInst.cleanMainPage();
     this.initContainerWords();
-    //this.initSelectOfGroupWords();
-    this.initGroupButtons();
   }
 
   private initContainerWords() {
@@ -25,22 +22,6 @@ export class Book {
       main.appendChild(this.createGroupBtnsWithListener());
       main.appendChild(this.createPaginationMenu());
       main.appendChild(this.createContainerWords());
-      /*main.innerHTML += `
-                          <div class="wrapper-btn">
-                            <div class="btn btn_group" data-group="0">Group1</div>
-                            <div class="btn btn_group" data-group="1">Group2</div>
-                            <div class="btn btn_group" data-group="2">Group3</div>
-                            <div class="btn btn_group" data-group="3">Group4</div>
-                            <div class="btn btn_group" data-group="4">Group5</div>
-                            <div class="btn btn_group" data-group="5">Group6</div>
-                          </div>
-                          <div class="container-words">
-                            <div class="container-words__select">
-                              ${CardInst.markdownOfSelect}
-                            </div>
-                          <div class="container-words__field">
-                          </div>
-                        </div>`;*/
     }
   }
   private createGroupBtnsWithListener(): HTMLDivElement {
@@ -53,6 +34,37 @@ export class Book {
       }
       wrapperBtn.appendChild(groupBtn);
     }
+    const audioGameBtn = document.createElement('div');
+    audioGameBtn.classList.add('btn_group');
+    audioGameBtn.innerHTML = 'Аудиоигра';
+    audioGameBtn.addEventListener('click', () => {
+      let page = 0;
+      let group = 0;
+      const groupBtns: NodeListOf<HTMLDivElement> | null = document.querySelectorAll('.btn_group');
+      if (groupBtns) {
+        groupBtns.forEach((btn) => {
+          if (btn.classList.contains('active')) {
+            const grouId = btn.dataset.group;
+            if (grouId) {
+              group = parseInt(grouId);
+            }
+          }
+        });
+      }
+      const pageItems: NodeListOf<HTMLLIElement> | null = document.querySelectorAll('.page-item');
+      if (pageItems) {
+        pageItems.forEach((pageItem) => {
+          if (pageItem.classList.contains('page-item_active')) {
+            const pageId = pageItem.dataset.id;
+            if (pageId) {
+              page = parseInt(pageId) - 1;
+            }
+          }
+        });
+      }
+      AudioGameInst.loadAudioGameFromBook(group, page);
+    });
+    wrapperBtn.appendChild(audioGameBtn);
     return wrapperBtn;
   }
   private createGroupBtn(group: number): HTMLDivElement {
@@ -79,13 +91,13 @@ export class Book {
     btnGroup.appendChild(btnText);
     btnGroup.appendChild(btnLevel);
     btnGroup.addEventListener('click', async () => {
+      this.removeActiveFromPageItem();
       const btns: NodeListOf<HTMLDivElement> | null = document.querySelectorAll('.btn_group');
       btns.forEach((btn) => {
         btn.classList.remove('active');
       });
       btnGroup.classList.add('active');
       UtilInst.cleanContainerWords();
-      //const words: Array<Word> = await ApiInst.getWordsWithPageAndGroup(AuthInst.getToken(), 0, group);
       const containerWords: HTMLDivElement | null = document.querySelector('.container-words__field');
       if (containerWords) {
         containerWords.innerHTML = '';
@@ -121,6 +133,8 @@ export class Book {
     pageLink.innerHTML = `${page}`;
     pageItem.appendChild(pageLink);
     pageItem.addEventListener('click', async () => {
+      this.removeActiveFromPageItem();
+      pageItem.classList.add('page-item_active');
       const words: Array<Word> = await ApiInst.getWordsWithPageAndGroup(
         AuthInst.getToken(),
         page - 1,
@@ -139,32 +153,15 @@ export class Book {
     });
     return pageItem;
   }
-  private initGroupButtons() {
-    const btnsGroup = document.querySelectorAll('.btn_group') as NodeListOf<HTMLDivElement>;
-    let group = 0;
-    btnsGroup.forEach((btn) => {
-      btn.addEventListener('click', async () => {
-        console.log(this.findActiveBtnOfGroup());
-        this.deleteActiveFromButtons(btnsGroup);
-        btn.classList.add('active');
-        group = 0;
-        if (btn.dataset.group) {
-          group = parseInt(btn.dataset.group);
-        }
-        /*const words: Array<Word> = await ApiInst.getWordsWithPageAndGroup(AuthInst.getToken(), 0, group);
-        const containerWords: HTMLDivElement | null = document.querySelector('.container-words__field');
-        if (containerWords) {
-          containerWords.innerHTML = '';
-          words.forEach((word) => {
-            //containerWords.innerHTML += CardInst.createCard(word);
-            containerWords.appendChild(CardInst.createCard(word));
-          });
-          CardInst.disableListenersToHardWords();
-          CardInst.disableListenersToLearnedWords();
-        }*/
+  private removeActiveFromPageItem() {
+    const pageItems: NodeListOf<HTMLLIElement> | null = document.querySelectorAll('.page-item');
+    if (pageItems) {
+      pageItems.forEach((pageItem) => {
+        pageItem.classList.remove('page-item_active');
       });
-    });
+    }
   }
+
   private createContainerWords(): HTMLDivElement {
     const containerWords = document.createElement('div');
     containerWords.className = 'container-words';
@@ -172,31 +169,6 @@ export class Book {
     containerWordsField.className = `container-words__field`;
     containerWords.appendChild(containerWordsField);
     return containerWords;
-  }
-  private initSelectOfGroupWords() {
-    const select: HTMLSelectElement | null = document.querySelector('.select');
-    const btnsGroup = document.querySelectorAll('.btn_group') as NodeListOf<HTMLDivElement>;
-    if (select) {
-      select.addEventListener('change', async () => {
-        const group: number = this.findActiveBtnOfGroup();
-        console.log(group);
-        const containerWords: HTMLDivElement | null = document.querySelector('.container-words__field');
-        if (containerWords) {
-          containerWords.innerHTML = '';
-          const words: Array<Word> = await ApiInst.getWordsWithPageAndGroup(
-            AuthInst.getToken(),
-            parseInt(select.value),
-            group
-          );
-          words.forEach((word) => {
-            //containerWords.innerHTML += CardInst.createCard(word);
-            containerWords.appendChild(CardInst.createCard(word));
-            //CardInst.loadListenersToButtons();
-          });
-          CardInst.disableListenersToHardWords();
-        }
-      });
-    }
   }
   private findActiveBtnOfGroup(): number {
     const btns: NodeListOf<HTMLDivElement> = document.querySelectorAll('.btn_group');
@@ -209,10 +181,5 @@ export class Book {
       }
     });
     return parseInt(result);
-  }
-  private deleteActiveFromButtons(btns: NodeListOf<HTMLDivElement>) {
-    btns.forEach((btn) => {
-      btn.classList.remove('active');
-    });
   }
 }

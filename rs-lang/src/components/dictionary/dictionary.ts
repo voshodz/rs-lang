@@ -1,4 +1,4 @@
-import { ApiInst, AuthInst, CardInst, DictionaryInst, UtilInst } from '../../instances/instances';
+import { ApiInst, AuthInst, DictionaryInst, UtilInst } from '../../instances/instances';
 import { BASE_URL, Word, WordDictionary } from '../../types';
 
 export class Dictionary {
@@ -118,7 +118,7 @@ export class Dictionary {
     let words: Array<WordDictionary> = await ApiInst.getAllWordsOfUser(AuthInst.getUserId(), AuthInst.getToken());
     if (type === 'hard') {
       words = words.filter((word) => word.difficulty === 'hard');
-    } else {
+    } else if (type === 'learned') {
       words = words.filter((word) => word.difficulty === 'learned');
     }
     if (containerWords) {
@@ -151,10 +151,29 @@ export class Dictionary {
                                   <br>
                                   ${word.textExampleTranslate}
                                   <br>
-                                  ${word.audioExample}
+                                  
                               </div>
+                              <div class="card__audio">
+                                      <figure>
+                                        <figcaption>Слово:</figcaption>
+                                        <audio
+                                            controls
+                                            src="${ApiInst.getBASE_URL()}/${word.audio}">
+                                                Your browser does not support the
+                                                <code>audio</code> element.
+                                        </audio>
+                                      </figure>
+                                      <figure>
+                                        <figcaption>Аудио пример:</figcaption>
+                                        <audio
+                                            controls
+                                            src="${ApiInst.getBASE_URL()}/${word.audioExample}">
+                                                
+                                                <code>audio</code> element.
+                                        </audio>
+                                      </figure>
+                                    </div>
                             </div>
-                            
                           <div class="card__img">
                             <img src="${BASE_URL}/${word.image}" alt="${word.image}">
                           </div>

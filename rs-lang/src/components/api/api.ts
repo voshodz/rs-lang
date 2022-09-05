@@ -1,9 +1,10 @@
 const BASE = 'https://api-rs-lang.herokuapp.com';
-//var token = '1';
-//var userId = '';
 
 export class Api {
   /**********Api of user*********** */
+  public getBASE_URL(): string {
+    return BASE;
+  }
   public createUser = async (email: string, password: string) => {
     const user = {
       email,
@@ -170,4 +171,13 @@ export class Api {
       console.log(err);
     });*/
   };
+  /************Api that not require Auth********* */
+  public getWordsWithPageAndGroupNoAuth = (page: number, group: number) =>
+    fetch(`${BASE}/words?page=${page}&group=${group}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.json());
 }
