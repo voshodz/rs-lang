@@ -1,6 +1,6 @@
 .btn {
   width: 250px;
-  height: 50px;
+  height: 30px;
   background-color: rgb(232, 233, 231);
   border: 2px solid black;
   font-size: 24px;
@@ -57,7 +57,7 @@
     background-color: whitesmoke;
     font-size: 16px;
     &:hover {
-      font-size: 24px;
+      //font-size: 24px;
       transition: 0.5s ease-in-out;
       background-color: rgb(223, 214, 198);
     }
