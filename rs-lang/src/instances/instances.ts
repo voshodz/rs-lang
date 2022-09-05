@@ -7,7 +7,9 @@ import { Util } from '../components/util/util';
 import { MainPage } from '../pages/main-page/main-page';
 import { AboutPage } from '../pages/about-page/about-page';
 import { AudioGame } from '../components/audiogame/audiogame';
+import { App } from '../app';
 /***********Сущности************* */
+export const AppInst = new App();
 export const ApiInst = new Api();
 export const BookInst = new Book();
 export const DictionaryInst = new Dictionary();

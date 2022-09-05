@@ -35,7 +35,7 @@ export class Book {
       wrapperBtn.appendChild(groupBtn);
     }
     const audioGameBtn = document.createElement('div');
-    audioGameBtn.classList.add('btn_group');
+    audioGameBtn.classList.add('btn_audio-game');
     audioGameBtn.innerHTML = 'Аудиоигра';
     audioGameBtn.addEventListener('click', () => {
       let page = 0;

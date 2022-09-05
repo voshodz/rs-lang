@@ -1,4 +1,3 @@
-import bootstrap from 'bootstrap';
 import { ApiInst, MainPageInst, UtilInst } from '../../instances/instances';
 import { AuthUser } from '../../types';
 import './login.scss';
@@ -104,13 +103,13 @@ export class Auth {
                             <div>
                               <label>
                                 Ваш email для входа:
-                                <input type="text" name="name" value="abc2@mail.ru" >
+                                <input type="text" name="name" value="" >
                               </label>
                             </div>
                             <div>
                               <label>
                                 Ваш пароль:
-                                <input type="password" name="password" value="kolorit1313" autocomplete="off">
+                                <input type="password" name="password" value="" autocomplete="off">
                               </label>
                             </div>                     
                             <div>
@@ -155,7 +154,6 @@ export class Auth {
   private successAuth(data: AuthUser) {
     this.setToken(data.token);
     this.setUserId(data.userId);
-    //this.setEmail(data.)
     localStorage.setItem('token', data.token);
     localStorage.setItem('userId', data.userId);
     this.initAuthorization();
@@ -188,9 +186,6 @@ export class Auth {
     const email: HTMLInputElement | null = form.querySelector('[name="email"]');
     const password: HTMLInputElement | null = form.querySelector('[name="password"]');
     if (name && password && email) {
-      //console.log(name.value);
-      //console.log(email.value);
-      //console.log(password.value);
       const result = await ApiInst.createUser(email.value, password.value);
       if (result.status === 417) {
         alert('User already exist');
@@ -220,19 +215,19 @@ export class Auth {
                   <div>
                     <label>
                       Введите ваше имя регистрации:
-                      <input type="text" name="name" value="Alex N" autocomplete="off" required placeholder="Ваше имя">
+                      <input type="text" name="name" value="" autocomplete="off" required placeholder="Ваше имя">
                     </label>
                   </div>
                   <div>
                     <label>
                       Введите ваше email регистрации:
-                      <input type="text" name="email" value="abc@mail.ru" autocomplete="off" required placeholder="Ваше email">
+                      <input type="text" name="email" value="" autocomplete="off" required placeholder="Ваше email">
                     </label>
                   </div>
                   <div>
                     <label>
                       Придумайте пароль:
-                      <input type="password" name="password" value="kolorit1313" autocomplete="off" required placeholder="Ваш пароль">
+                      <input type="password" name="password" value="" autocomplete="off" required placeholder="Ваш пароль">
                     </label>
                   </div>                     
                   <div>

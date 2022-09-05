@@ -6,6 +6,20 @@
   font-size: 24px;
   color: black;
   cursor: pointer;
+  &_audio-game {
+    width: 180px;
+    height: 70px;
+    border: 2px solid black;
+    background: rgb(134, 169, 206);
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+      cursor: pointer;
+      background: rgb(35, 85, 138);
+    }
+  }
   &.active {
     background-color: orange;
   }

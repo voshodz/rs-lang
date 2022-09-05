@@ -16,7 +16,6 @@ export class Dictionary {
     if (!AuthInst.checkAuthorization()) {
       if (main) {
         AuthInst.loadLogin();
-        //main.innerHTML = `<div>Нет авторизации</div`;
         return;
       }
     }
@@ -57,10 +56,8 @@ export class Dictionary {
     const btnText = document.createElement('div');
     btnText.classList.add('btn_group__text');
     btnText.innerHTML = textOfDescriptions[group];
-    //btnGroup.classList.add('btn');
     btnGroup.classList.add('btn_group');
     btnGroup.dataset.group = group.toString();
-    //btnGroup.innerHTML = `Group ${group + 1}`;
     btnGroup.appendChild(btnText);
     btnGroup.appendChild(btnLevel);
     btnGroup.addEventListener('click', async () => {
@@ -76,7 +73,6 @@ export class Dictionary {
         typeBtnHard.classList.remove('active');
         typeBtnLearned.classList.remove('active');
       }
-      //await this.loadCardsOfHardWordsOfUser(group);
     });
     return btnGroup;
   }

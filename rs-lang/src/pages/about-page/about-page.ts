@@ -7,6 +7,7 @@ export class AboutPage {
                 <div class="about-page__img">
                   <img src="./assets/about.jpg" alt="about-img">
                 </div>
+                <h4 class="about-page__title">Alex N. 2022</h4>
                 <div class="about-page__text">
                   <a href="http://github.com/voshodz"><span>github.com/voshodz</span></a>
                 </div>

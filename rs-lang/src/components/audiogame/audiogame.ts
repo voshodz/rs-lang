@@ -16,7 +16,6 @@ export class AudioGame {
     return Math.floor(Math.random() * max);
   }
   public loadAudioGameFromMainPage() {
-    //console.log('loading audio game');
     UtilInst.cleanMainPage();
     const mainPage = document.querySelector('.main-page');
     if (mainPage) {
@@ -34,10 +33,6 @@ export class AudioGame {
     }
   }
   private getAnswers() {
-    console.log(this.rightAnswers);
-    console.log(this.wrongAnswers);
-    //this.rightAnswers = [];
-    //this.wrongAnswers = [];
     const audioGame: HTMLDivElement | null = document.querySelector('.audio-game');
     if (audioGame) {
       audioGame.innerHTML = '';
@@ -123,7 +118,6 @@ export class AudioGame {
         const level = audioGameSelect.value;
 
         const words = await ApiInst.getWordsWithPageAndGroupNoAuth(this.getRandomInt(29), parseInt(level));
-        //console.log(this.randomWords(words[0], words));
         this.loadAudioGameWithWords(words);
       }
     });
@@ -228,7 +222,6 @@ export class AudioGame {
 
     const audioSource: HTMLAudioElement = new Audio(`${ApiInst.getBASE_URL()}/${word.audio}`);
     audioIcon.dataset.audioSrc = `${ApiInst.getBASE_URL()}/${word.audio}`;
-    // document.removeEventListener('keydown', this.listenerToKey, false);
 
     audioIcon.addEventListener('click', () => {
       audioSource.play();
@@ -257,7 +250,6 @@ export class AudioGame {
     resultArray.push(currentWord);
     while (resultArray.length < 5) {
       const randNumb = this.getRandomInt(19);
-      //console.log('rand number => ', randNumb);
       if (words[randNumb].id !== currentWord.id && !arrayOfRandomNumbers.includes(randNumb)) {
         arrayOfRandomNumbers.push(randNumb);
         resultArray.push(words[randNumb]);
