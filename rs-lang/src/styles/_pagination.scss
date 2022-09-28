@@ -1,0 +1,20 @@
+.wrapper-pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination {
+  min-width: 80vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.page-item {
+  &:hover {
+    cursor: pointer;
+  }
+  &_active a {
+    background: rgb(54, 149, 25);
+  }
+}

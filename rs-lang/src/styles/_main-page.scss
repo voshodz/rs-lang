@@ -1,0 +1,14 @@
+
+.main-page {
+  &__img img{
+    width: 560px;
+  }
+  &__text {
+    font-size: 40px;
+    padding-top: 100px;
+  }
+  &__wrapper {
+    display: flex;
+    padding-top: 220px;
+  }
+}

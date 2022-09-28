@@ -1,0 +1,56 @@
+.card {
+  //@at-root: 50px;
+  font-size: 18px;
+  //max-width: 60vw;
+  //height: 450px;
+  margin-bottom: 10px;
+  //background-image: url("https://rss-words-3.herokuapp.com/files/01_0010.jpg");
+  background-repeat: no-repeat;
+  justify-content: space-between;
+  box-shadow: 2px 2px 16px 2px black;
+  //border: 4px solid black;
+  //background-color: rgb(238, 248, 238);
+  display: flex;
+  flex-direction: column;
+  &__audio {
+    display: flex;
+  }
+  &__info {
+    //border: 2px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    &__text {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  &__img {
+    display: flex;
+    height: 200px;
+  }
+  &__btn-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+.container-words {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 650px;
+  gap: 5px;
+  margin: 0 auto;
+  &__field {
+    display: flex;
+    flex-direction: column;
+    //border: 2px solid black;
+    gap: 5px;
+  }
+}
+
+.select {
+  font-size: 36px;
+  width: 300px;
+}

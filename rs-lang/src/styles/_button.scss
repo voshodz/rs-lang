@@ -1,0 +1,111 @@
+.btn {
+  width: 250px;
+  height: 30px;
+  background-color: rgb(232, 233, 231);
+  border: 2px solid black;
+  font-size: 24px;
+  color: black;
+  cursor: pointer;
+  &_audio-game {
+    width: 180px;
+    height: 70px;
+    border: 2px solid black;
+    background: rgb(134, 169, 206);
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+      cursor: pointer;
+      background: rgb(35, 85, 138);
+    }
+  }
+  &.active {
+    background-color: orange;
+  }
+  &_active {
+    background-color: rgb(47, 154, 81);
+  }
+  &_book, &_dictionary, &_about, &_audiogame {
+    &:hover {
+      cursor: pointer;
+      color: black;
+    }
+  }
+  &_hard,&_learned, &_delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 50px;
+    //background-color: rgb(205, 166, 115);
+    font-size: 12px;
+    /*&.btn_active {
+
+    }*/
+    &:hover {
+      //background-color: rgb(99, 58, 5);
+      cursor: pointer;
+    }
+  }
+  &_register-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    border-radius: 5%;
+    background-color: whitesmoke;
+    font-size: 16px;
+    &:hover {
+      //font-size: 24px;
+      transition: 0.5s ease-in-out;
+      background-color: rgb(223, 214, 198);
+    }
+  }
+}
+
+.btn_group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 180px;
+  height: 70px;
+  border: 2px solid rgb(84, 82, 82);
+  border-radius: 8%;
+  font-size: 14px;
+  &__text {
+    display: flex;
+    font-size: 14px;
+    max-width: 50px;
+  }
+  &__level {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    width: 70px;
+    height: 100%;
+    background: rgb(170, 172, 193);
+    border-radius: 35% 30%;
+  }
+  &:hover {
+    //transition: 0.5s ease-in-out;
+    //background-color: rgb(90, 84, 84);
+    border: 2px solid rgb(6, 6, 6);
+    cursor: pointer;
+    .btn_group__level {
+      background: rgb(5, 16, 135);
+    }
+  }
+  &.active {
+    .btn_group__level {
+      background: rgb(5, 16, 135);
+    }
+  }
+}
+
+.btn_login {
+  //background-color: rgb(76, 193, 94);
+  border: 2px solid black;
+  cursor: pointer;
+}
